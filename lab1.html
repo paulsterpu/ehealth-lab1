@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    
+    <script>
+    
+      var tr, td, text, data, p;
+      
+       axios.get(`https://alexgr.ro/ehealth/patients.json`)
+        .then(response => {
+          
+          data = response.data;
+
+          console.log(response.data)
+          
+          for(i = 0; i < data.length; i++) {
+              tr = document.createElement('tr');
+              
+              td = document.createElement('td');
+              td.setAttribute('id', i);
+              td.style.border = '2px solid black'; 
+              text = document.createTextNode(data[i].first_name + ' ' + data[i].last_name);
+              td.appendChild(text);
+              tr.appendChild(td);
+              
+              td = document.createElement('td');
+              td.setAttribute('id', i);
+              td.style.border = '2px solid black';
+              text = document.createTextNode(data[i].id);
+              td.appendChild(text);
+              tr.appendChild(td);
+              
+              (function(data){
+                tr.onclick = function(){
+                  document.getElementById("details-container").innerHTML = '';
+                  
+                  p = document.createElement("P");
+                  text = document.createTextNode('First Name: ' + data.first_name);
+                  p.appendChild(text);
+                  document.getElementById("details-container").appendChild(p);
+                  
+                  p = document.createElement("P");
+                  text = document.createTextNode('Last Name: ' + data.last_name);
+                  p.appendChild(text);
+                  document.getElementById("details-container").appendChild(p);
+                  
+                  p = document.createElement("P");
+                  text = document.createTextNode('Email: ' + data.last_name);
+                  p.appendChild(text);
+                  document.getElementById("details-container").appendChild(p);
+                  
+                  p = document.createElement("P");
+                  text = document.createTextNode('Diagnosis Description: ' + data.diagnosis_description);
+                  p.appendChild(text);
+                  document.getElementById("details-container").appendChild(p);
+                }; 
+              })(data[i]);
+              
+              document.getElementById("patients-table").appendChild(tr);
+          }
+          
+        })
+        .catch(e => {
+        })
+
+    </script>
+
+
+  </head>
+  
+  <body>
+    
+    <table id="patients-table">
+        <tr>
+          <th>Name</th>
+          <th>ID</th>
+        </tr>
+    </table>
+    
+    <div id="details-container" style="border: 2px solid black"></div>
+    
+  </body>
+
+
+</html>
